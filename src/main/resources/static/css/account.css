@@ -1,0 +1,12 @@
+body{
+	margin: auto;
+	background-color: lightgrey;
+	text-align: center;
+}
+form{
+	max-width: 100em;
+	padding: 1em;
+	margin: auto;
+	border-top: .25em solid black;
+	text-align: center;
+}

@@ -1,0 +1,20 @@
+body{
+	margin: auto;
+	background-color: lightgrey;
+	text-align: center;
+	font-weight: bold;
+}
+
+form{
+	max-width: 100em;
+	padding: 1em;
+	margin: auto;
+	border-top: .25em solid black;
+	text-align: center;
+
+}
+
+input{ 
+	display: inline-block;
+	padding: .25em;
+	}
