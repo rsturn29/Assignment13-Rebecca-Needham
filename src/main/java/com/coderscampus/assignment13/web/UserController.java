@@ -29,8 +29,7 @@ public class UserController {
 	private TransactionService transService;
 	@Autowired
 	private AccountService acctService;
-	@Autowired
-	private AddressService addressService;
+
 
 	@GetMapping("/register")
 	public String getCreateUser(ModelMap model) {
