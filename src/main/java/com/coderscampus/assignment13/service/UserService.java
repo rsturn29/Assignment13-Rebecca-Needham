@@ -54,7 +54,20 @@ public class UserService {
 	}
 
 	public User saveUser(User user) {
-		addAccountOnRegistration(user);
+		if (user.getUserId() == null) {
+			Account checking = new Account();
+			checking.setAccountName("Checking Account");
+			checking.getUsers().add(user);
+			Account savings = new Account();
+			savings.setAccountName("Savings Account");
+			savings.getUsers().add(user);
+			user.getAccounts().add(checking);
+			user.getAccounts().add(savings);
+			accountRepo.save(checking);
+			accountRepo.save(savings);
+		
+		}
+		
 		return userRepo.save(user);
 	}
 	public void delete(Long userId) {
@@ -70,24 +83,11 @@ public class UserService {
 		Optional<User> userOpt = userRepo.findByIdWithAddress(userId);
 		return userOpt.orElse(new User());
 	}
-	private void addAccountOnRegistration(User user) {
-		if (user.getUserId() == null) {
-			Account checking = new Account();
-			checking.setAccountName("Checking Account");
-			checking.getUsers().add(user);
-			Account savings = new Account();
-			savings.setAccountName("Savings Account");
-			savings.getUsers().add(user);
-			user.getAccounts().add(checking);
-			user.getAccounts().add(savings);
-			accountRepo.save(checking);
-			accountRepo.save(savings);
-		
-		}
+
 	}
 
 		
-	}
+	
 		
 	
 

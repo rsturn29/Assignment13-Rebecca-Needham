@@ -16,6 +16,7 @@ import com.coderscampus.assignment13.domain.Address;
 import com.coderscampus.assignment13.domain.Transaction;
 import com.coderscampus.assignment13.domain.User;
 import com.coderscampus.assignment13.service.AccountService;
+import com.coderscampus.assignment13.service.AddressService;
 import com.coderscampus.assignment13.service.TransactionService;
 import com.coderscampus.assignment13.service.UserService;
 
@@ -28,6 +29,8 @@ public class UserController {
 	private TransactionService transService;
 	@Autowired
 	private AccountService acctService;
+	@Autowired
+	private AddressService addressService;
 
 	@GetMapping("/register")
 	public String getCreateUser(ModelMap model) {
@@ -52,6 +55,9 @@ public class UserController {
 		if (users.size() == 1) {
 			model.put("user", users.iterator().next());
 		}
+		
+
+		
 
 		return "users";
 	}
@@ -59,6 +65,7 @@ public class UserController {
 	@GetMapping("/users/{userId}")
 	public String getOneUser(ModelMap model, @PathVariable Long userId) {
 		User user = userService.findByIdWithAccounts(userId);
+	
 		if (user.getAddress() == null) {
 			Address address = new Address();
 			address.setUser(user);
@@ -69,14 +76,19 @@ public class UserController {
 		model.put("users", Arrays.asList(user));
 		model.put("user", user);
 		model.put("address", user.getAddress());
+		model.put("selectedUserId", userId);
 		return "users";
 	}
 
 	@PostMapping("/users/{userId}")
 	public String postOneUser(@PathVariable Long userId, User user) {
-		User oldUser = userService.findByIdWithAccounts(userId);
-		user.setAccounts(oldUser.getAccounts());
-		user.setAddress(user.getAddress());
+		User currentUser = userService.findByIdWithAccounts(userId);
+		user.setAccounts(currentUser.getAccounts());
+		Address address = currentUser.getAddress();
+		
+		currentUser.setAddress(user.getAddress());
+		currentUser.setAddress(address);
+		
 		userService.saveUser(user);
 
 		return "redirect:/users/" + user.getUserId();
