@@ -9,8 +9,15 @@
 	<h1>Users</h1>
 
 
-	<div th:if="${selectedUserId != null and selectedUserId == user.userId}" >
-		<div>
+	<div th:if="${selectedUserId != null }">
+		<div th:if="${user.userId == null}">
+			<p>
+				User with ID <span th:text="${selectedUserId}"></span> does not
+				exist.
+			</p>
+			<a href="/users">Back to User List</a>
+		</div>
+		<div th:if="${user.userId != null}">
 			<form action="" method="post">
 
 				<input type="hidden" th:field="${user.userId}" />
@@ -49,12 +56,13 @@
 					Zip Code:<input type="text" th:field="${user.address.zipCode}" />
 				</div>
 				<input type="hidden" th:field="${user.address.userId}" />
-			
+
 				<hr />
 				<br />
 				<div>
 					<input type="submit" value="Update User Account" />
 				</div>
+
 			</form>
 
 			<form th:action="@{/users/{userId}/delete(userId=${user.userId})}"
@@ -78,8 +86,10 @@
 				<a href="/users/">Back to User List</a>
 			</div>
 		</div>
+
+
 	</div>
-	<div th:if="${selectedUserId == null}">
+	<div th:if="${selectedUserId == null and not #lists.isEmpty(users)}">
 		<div th:each="user : ${users}">
 			<a th:href="@{/users/{userId}(userId=${user.userId})}"
 				th:text="${user.userId}"></a><br /> <span
@@ -93,6 +103,15 @@
 			</div>
 			<hr />
 		</div>
+
+
 	</div>
+	<div th:if="${selectedUserId == null and #lists.isEmpty(users)}">
+		<h2>No Users in Database, please register Users</h2>
+		<a href="/register">Click here to register New User</a>
+	</div>
+
+
+
 </body>
 </html>
